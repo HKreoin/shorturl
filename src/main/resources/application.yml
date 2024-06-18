@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: shorturl
+  datasource:
+    url:
+      jdbc:postgresql://localhost/short
+    username: admin
+    password: 10293
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
+    hibernate:
+      ddl-auto: update
