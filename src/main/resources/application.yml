@@ -3,13 +3,13 @@ spring:
     name: shorturl
   datasource:
     url:
-      jdbc:postgresql://localhost/short
-    username: admin
-    password: 10293
+      jdbc:postgresql://localhost:5432/short
+    username: postgres
+    password: postgres
   jpa:
     generate-ddl: true
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL82Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
