@@ -2,42 +2,58 @@ package org.kreoin.shorturl.service;
 
 import org.kreoin.shorturl.dto.UrlCreateDTO;
 import org.kreoin.shorturl.dto.UrlDTO;
+import org.kreoin.shorturl.entity.Url;
 import org.kreoin.shorturl.exception.ResourceNotFoundException;
-import org.kreoin.shorturl.mapper.UrlMapper;
 import org.kreoin.shorturl.repository.UrlRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static org.kreoin.shorturl.util.UrlUtil.generateToken;
+
 @Service
 public class UrlService {
     @Autowired
     private UrlRepository repository;
 
-    @Autowired
-    private UrlMapper mapper;
 
-    public List<UrlDTO> getAll() {
+    public List<Url> getAll() {
         var urls = repository.findAll();
-        return urls
-                .stream()
-                .map(mapper::map)
-                .toList();
+        return urls;
     }
 
-    public UrlDTO finsByShortUrl(String slug) {
+    public UrlDTO findByShortUrl(String slug) {
         var url = repository
                 .findByShortUrl(slug)
                 .orElseThrow(() -> new ResourceNotFoundException("Короткая ссылка "
                         + slug + " не найдена в базе данных"));
-        return mapper.map(url);
+        var urlDto = new UrlDTO();
+        url.plusCount();
+        repository.save(url);
+        urlDto.setId(url.getId());
+        urlDto.setUrl(url.getUrl());
+        urlDto.setShortUrl(url.getShortUrl());
+        urlDto.setRequestCount(url.getRequestCount());
+        return urlDto;
     }
 
-    public UrlDTO create(UrlCreateDTO urlData) {
-        var url = mapper.map(urlData);
+    public Url create(UrlCreateDTO urlData) {
+        String token = "";
+        var exist = false;
+        while (!exist) {
+            token = generateToken();
+            if (repository.findByShortUrl(token).isEmpty()) {
+                exist = true;
+            }
+        }
+        var url = new Url();
+        url.setUrl(urlData.getUrl());
+        url.setShortUrl(token);
+        url.setRequestCount(0L);
+
         repository.save(url);
-        return mapper.map(url);
+        return url;
     }
 
     public void delete(String slug) {

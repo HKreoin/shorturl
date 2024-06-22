@@ -5,7 +5,6 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UrlCreateDTO {
-    private String url;
-    private String shortUrl;
+public class UrlUpdateDTO {
+    private Long requestCount;
 }
