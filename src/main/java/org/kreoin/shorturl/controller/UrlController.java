@@ -1,5 +1,6 @@
 package org.kreoin.shorturl.controller;
 
+import jakarta.validation.Valid;
 import org.kreoin.shorturl.dto.UrlCreateDTO;
 import org.kreoin.shorturl.entity.Url;
 import org.kreoin.shorturl.service.UrlService;
@@ -10,8 +11,9 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/")
+@RequestMapping("")
 public class UrlController {
 
     @Autowired
@@ -26,13 +28,13 @@ public class UrlController {
     public RedirectView redirect(@PathVariable String shortUrl) {
         var redirect = new RedirectView();
         var urlModel = service.findByShortUrl(shortUrl);
-        redirect.setUrl(urlModel.getUrl());
+        redirect.setUrl(urlModel.getLongUrl());
         return redirect;
     }
 
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public Url create(@RequestBody UrlCreateDTO urlData) {
+    public Url create(@Valid @RequestBody UrlCreateDTO urlData) {
         return service.create(urlData);
     }
 

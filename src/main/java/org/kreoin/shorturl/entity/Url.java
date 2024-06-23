@@ -2,6 +2,8 @@ package org.kreoin.shorturl.entity;
 
 import jakarta.persistence.*;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,10 +24,11 @@ public class Url {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
+    @NotBlank
+    private String longUrl;
 
-    private String url;
-
-    private String shortUrl;
+    @Pattern(regexp = "[0-9a-zA-Z]{1,20}")
+    private String shortUrlToken;
 
     @LastModifiedDate
     private LocalDate updatedAt;
