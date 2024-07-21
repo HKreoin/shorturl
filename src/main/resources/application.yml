@@ -1,3 +1,16 @@
 spring:
   application:
     name: shorturl
+  datasource:
+    url: jdbc:postgresql://localhost:5433/url_db
+    username: admin
+    password: 123qweASD
+  jpa:
+    generate-ddl: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+
