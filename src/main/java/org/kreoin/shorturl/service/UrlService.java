@@ -40,7 +40,7 @@ public class UrlService {
     public Url create(UrlCreateDTO urlData) {
         String token = urlData.getShortUrlToken();
 
-        while (token == null || repository.findByShortUrlToken(token).isPresent()) {
+        while (token.isEmpty() || repository.findByShortUrlToken(token).isPresent()) {
             token = generateToken();
         }
 
